@@ -1,0 +1,6 @@
+*.iso
+*.vmlinuz
+*.gz
+*.sig
+*.log
+.idea/**
