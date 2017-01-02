@@ -6,8 +6,7 @@ function output_text_help() {
   local MESSAGE;    MESSAGE="$1"
   local OUTPUT;     OUTPUT="$2"
   box_line "Generating menu help text"
-  echo "
-  TEXT HELP
+  echo "  TEXT HELP
   ${MESSAGE}
   ENDTEXT" >> "${OUTPUT}"
 }
@@ -20,6 +19,28 @@ function output_menu_header() {
 INCLUDE pxelinux.cfg/template/back_button" > "${OUTPUT}"
 }
 ## ISO Menu Entry
+function output_menu_entry_include() {
+  local TARGET;     TARGET="$1"
+  local TITLE;      TITLE="$2"
+  local OUTPUT;     OUTPUT="$3"
+  box_line "Generating include menu item"
+  echo "MENU INCLUDE ${TARGET} ${TITLE}" >> "${OUTPUT}"
+}
+## Linux Menu Entry
+function output_menu_entry_linux() {
+  local TITLE;      TITLE="$1"
+  local KERNEL;     KERNEL="$2"
+  local INITRD;     INITRD="$3"
+  local APPEND;     APPEND="$4"
+  local OUTPUT;     OUTPUT="$5"
+  box_line "Generating Linux menu item"
+  echo "
+LABEL ${TITLE// /-}
+  MENU LABEL ${TITLE}
+  KERNEL ${KERNEL}
+  APPEND initrd=$INITRD ${APPEND}" >> "${OUTPUT}"
+}
+## ISO Menu Entry
 function output_menu_entry_iso() {
   local CORE_DIR;   CORE_DIR="$1"
   local VERSION;    VERSION="$2"
@@ -29,11 +50,17 @@ function output_menu_entry_iso() {
   local TITLE;      TITLE="$6"
   local OUTPUT;     OUTPUT="$7"
   box_line "Generating ISO menu item"
+#  echo "
+#LABEL ${CORE_DIR}-${VERSION}-${OPTION//\ /_}-iso
+#  MENU LABEL ${TITLE} ${VERSION} - ISO (${ARCH}-${OPTION})
+#  KERNEL boot/isolinux/memdisk
+#  APPEND iso initrd=${CORE_DIR}/${VERSION}/${FILETARGET} raw" >> "${OUTPUT}"
   echo "
 LABEL ${CORE_DIR}-${VERSION}-${OPTION//\ /_}-iso
   MENU LABEL ${TITLE} ${VERSION} - ISO (${ARCH}-${OPTION})
-  KERNEL boot/isolinux/memdisk
-  APPEND iso initrd=${CORE_DIR}/${VERSION}/${FILETARGET} raw" >> "${OUTPUT}"
+  LINUX /boot/isolinux/memdisk
+  INITRD /${CORE_DIR}/${VERSION}/${FILETARGET}
+  APPEND iso" >> "${OUTPUT}"
 }
 ## Repeat Helper
 function repeat_char() {
@@ -46,5 +73,7 @@ function repeat_char() {
 ## Expose custom functions
 export -f output_menu_header
 export -f output_text_help
+export -f output_menu_entry_include
+export -f output_menu_entry_linux
 export -f output_menu_entry_iso
 export -f repeat_char
