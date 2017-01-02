@@ -1,58 +1,50 @@
 #!/usr/bin/env bash
+## Import tools
+source "files.sh"
+source "lines.sh"
+source "colors.sh"
+source "output.sh"
 ## Parent script for managing PXE pool of images
-TITLE="Untitled"
-SUBTITLE="Undefined"
+export TITLE="Untitled"
+export SUBTITLE="Undefined"
 ## Architecture targets
-AVAILABLE_ARCHES=()
-TARGET_ARCHES=()
+export AVAILABLE_ARCHES=()
+export TARGET_ARCHES=()
 ## Available Versions
-KNOWN_VERSIONS=()
-TARGET_VERSIONS=()
-VERSION_SEPARATOR="."
+export KNOWN_VERSIONS=()
+export TARGET_VERSIONS=()
+export VERSION_SEPARATOR="."
 ## Target Selection
-TARGET=$1
+export TARGET=$1
 ## Extended Options
-EXTENDED_OPTIONS=()
-TARGET_OPTIONS=()
+export EXTENDED_OPTIONS=()
+export TARGET_OPTIONS=()
 ## Mirror Definitions
-PROTOCOL="https"
-BASE_HOST="mirror.umd.edu"
-ROOT_PATH="/"
+export PROTOCOL="https"
+export BASE_HOST="mirror.umd.edu"
+export ROOT_PATH="/"
 ## Directory Definitions
-CORE_DIR=""
-DIRNAME=""
-START_DIR=""
+export CORE_DIR=""
+export DIRNAME=""
+export START_DIR=""
 ## Output Generation
-OUTPUT_MENU_FILE=""
+export OUTPUT_MENU_FILE=""
 ## General Excludes
-EXCLUDES=("boot" "pxelinux.cfg" "gparted" "memtest86" "systemrescuecd")
-NULL=$(printf "%b" "\u0f")
-SPACE=$(printf "%b" "\u2002")
-SPACER=$(printf "%b " ${UR_DR})
+export EXCLUDES=("boot" "pxelinux.cfg" "gparted" "memtest86" "systemrescuecd")
+export NULL=$(printf "%b" "\u0f")
+export SPACE=' '
+export SPACER=''
 ## Content
-_ROOT_DIR=$(pwd)
-## Expose custom variables
-export TITLE
-export SUBTITLE
-export AVAILABLE_ARCHES
-export TARGET_ARCHES
-export KNOWN_VERSIONS
-export TARGET_VERSIONS
-export VERSION_SEPARATOR
-export VERSIONS
-export EXTENDED_OPTIONS
-export TARGET_OPTIONS
-export PROTOCOL
-export BASE_HOST
-export ROOT_PATH
-export CORE_DIR
-export DIRNAME
-export START_DIR
-export OUTPUT_MENU_FILE
-export NULL
-export SPACE
-export SPACER
-export _ROOT_DIR
+export _ROOT_DIR=$(pwd)
+## Style configuration
+export THEME_1ST=$(echo -e "${FG_GRN}")
+export THEME_2ND=$(echo -e "${FG_WHT}")
+export THEME_3RD=$(echo -e "${FG_BLU}")
+export THEME_4TH=$(echo -e "${FG_CYN}")
+export THEME_WRN=$(echo -e "${FG_YLW}")
+export THEME_ERR=$(echo -e "${FG_RED}")
+export THEME_SPACER=$(printf "%b" ${UR_DR})
+export THEME_BOX_DEFAULT_WIDTH=85
 #
 # Recursively update directory if it contains
 # an update.sh script.
@@ -60,7 +52,7 @@ export _ROOT_DIR
 function process_dir() {
     local ITEM;     ITEM="$1";
     if [ -d "${ITEM}" ]; then
-        box_start ${ITEM}
+        box_start ${ITEM} ${ALIGN_LEFT}
         if [ -f "${ITEM}/update.sh" ]; then
             box_line "Update starting"
             "${ITEM}/update.sh"
@@ -68,23 +60,19 @@ function process_dir() {
         else
             box_line "Update script not found"
         fi
-        if [ -f "${ITEM}/default.menu" ]; then
-            output_menu_entry_include "${ITEM}/default.menu" "${ITEM}" "${_ROOT_DIR}/images.menu"
-        fi
-        box_end ${ITEM} "right"
+        box_end ${ITEM}
     fi
 }
-## Import tools
-source "files.sh"
-source "lines.sh"
-source "output.sh"
 ## Start output
-output_menu_header "Images" "${_ROOT_DIR}/images.menu"
-box_start ${_ROOT_DIR}
+box_start "${_ROOT_DIR}"
 if [ -z ${TARGET} ]; then
+    output_menu_header "Images" "${_ROOT_DIR}/images.menu"
     for ITEM in *; do
         if [[ ! ${EXCLUDES[*]} =~ "${ITEM}" ]]; then
             process_dir "${ITEM}"
+            if [ -f "${ITEM}/default.menu" ]; then
+                output_menu_entry_include "${ITEM}/default.menu" "${ITEM}" "${_ROOT_DIR}/images.menu"
+            fi
         fi
     done
 else
@@ -94,3 +82,5 @@ else
 fi
 cd ${_ROOT_DIR}
 box_end ${_ROOT_DIR}
+echo $RESET
+echo $(printf "$FG_YLW")

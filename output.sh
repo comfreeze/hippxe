@@ -55,7 +55,7 @@ LABEL ${CORE_DIR}-${VERSION}-${OPTION//\ /_}-iso
   MENU LABEL ${TITLE} ${VERSION} - ISO (${ARCH}-${OPTION})
   LINUX /boot/isolinux/memdisk
   INITRD /${CORE_DIR}/${VERSION}/${FILETARGET}
-  APPEND iso" >> "${OUTPUT}"
+  APPEND iso raw" >> "${OUTPUT}"
 }
 ## Repeat Helper
 function repeat_char() {
