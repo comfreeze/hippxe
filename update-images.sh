@@ -62,20 +62,17 @@ source "output.sh"
 ## Start output
 box_start ${_ROOT_DIR}
 for ITEM in *; do
-#  SPACER=$(printf "%b " ${UR_DR});
-  if [ -d "${ITEM}" ] && [[ ! ${EXCLUDES[*]} =~ "${ITEM}" ]]; then
-    box_start ${ITEM}
-#    printf "%s%b%b %s\n" ${SPACER} ${RR_DCR} ${LR_RT} ${ITEM}
-    if [ -f "${ITEM}/update.sh" ]; then
-      box_line "update.sh was found"
-      box_line "update.sh running"
-#      printf "%s%b%s %s\n" ${SPACER} ${RR_UR_DR} $(repeat_char ${LR_RR} 4) "update.sh"
-      #"${ITEM}/update.sh"
-      box_line "update.sh complete"
+    if [ -d "${ITEM}" ] && [[ ! ${EXCLUDES[*]} =~ "${ITEM}" ]]; then
+        box_start ${ITEM}
+        if [ -f "${ITEM}/update.sh" ]; then
+            box_line "update.sh starting"
+            "${ITEM}/update.sh"
+            box_line "update.sh complete"
+        else
+            box_line "update.sh not found"
+        fi
+        box_end ${ITEM} "right"
     fi
-    box_end ${ITEM} "right"
-#    printf "%s%b%b %s\n" ${SPACER} ${RR_UCR} ${LR_RT} ${ITEM}
-  fi
 done
 cd ${_ROOT_DIR}
 box_end ${_ROOT_DIR}

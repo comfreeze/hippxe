@@ -201,5 +201,8 @@ function box_line() {
 # printf "%s%b%s%b %s %b%s%b%s\n" ${SPACER} ${LCORNER} ${PAD} ${LR_RT} ${TITLE} ${LT_RR} ${PAD} ${RCORNER} ${SPACER}
 }
 ## Expose custom functions
+export -f box_boundary
+export -f box_title
 export -f box_start
 export -f box_end
+export -f box_line
