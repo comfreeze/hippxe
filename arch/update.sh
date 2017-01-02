@@ -22,7 +22,6 @@ TARGET_OPTIONS=()
 CORE_DIR="${SUBTITLE}";
 ## Save current directory
 START_DIR=$(pwd);
-box_line "Starting in ${START_DIR}";
 ## Output Generation
 OUTPUT_MENU_FILE="${START_DIR}/${CORE_DIR}/default.menu";
 ## Generate Menu Header
@@ -47,17 +46,8 @@ for VERSION in ${TARGET_VERSIONS[@]}; do
             getfile "${URL}/${FILETARGET}";
             if [ -f "${FILETARGET}" ]; then
                 ## Generate menu entry
-                output_menu_entry_iso \
-                    "${CORE_DIR}" \
-                    "${VERSION}" \
-                    "${ARCH}" \
-                    "NA" \
-                    "${FILETARGET}" \
-                    "${TITLE}" \
-                    "${OUTPUT_MENU_FILE}";
-                output_text_help \
-                    "Boot ${TITLE} ${VERSION} ISO" \
-                    "${OUTPUT_MENU_FILE}";
+                output_menu_entry_iso "${CORE_DIR}" "${VERSION}" "${ARCH}" "NA" "${FILETARGET}" "${TITLE}" "${OUTPUT_MENU_FILE}";
+                output_text_help "Boot ${TITLE} ${VERSION} ISO" "${OUTPUT_MENU_FILE}";
             fi
 #        done
         cd ..
