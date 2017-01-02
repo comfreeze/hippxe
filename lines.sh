@@ -113,3 +113,93 @@ export RT='\u257A'; export DT='\u257B';
 ## Mixed
 export LR_RT='\u257C'; export UR_DT='\u257D';
 export LT_RR='\u257E'; export UT_DR='\u257F';
+## Helper Constants
+__OUTPUT_SPACER=$(printf "%b " ${UR_DR})
+__SPACER_LENGTH=$(expr length ${__OUTPUT_SPACER})
+__DEFAULT_ALIGNMENT="left"
+__DEFAULT_WIDTH=85
+## Expose helper variables
+export __OUTPUT_SPACER
+export __SPACER_LENGTH
+export __DEFAULT_ALIGNMENT
+export __DEFAULT_WIDTH
+## Box Helpers
+### Boundary
+function box_boundary() {
+    local TITLE;        TITLE=${1-"Untitled"};
+    local POSITION;     POSITION=${2-"top"};
+    local ALIGNMENT;    ALIGNMENT=${3-${__DEFAULT_ALIGNMENT}};
+    local WIDTH;        WIDTH=${4-${__DEFAULT_WIDTH}};
+    local PAD_CHAR;     PAD_CHAR=${5-${LR_RR}};
+    local LCORNER;      LCORNER=$6;
+    local RCORNER;      RCORNER=$7;
+    case ${POSITION} in
+        "top")
+            LCORNER=${6-${RR_DCR}};
+            RCORNER=${7-${LR_DCR}};
+        ;;
+        "bottom")
+            LCORNER=${6-${RR_UCR}};
+            RCORNER=${7-${LR_UCR}};
+        ;;
+        "line")
+            LCORNER=${6-"\u2002"};
+            RCORNER=${7-"\u2002"};
+        ;;
+        **)
+            LCORNER=${6-${RR_UR_DR}};
+            RCORNER=${7-${LR_UR_DR}};
+        ;;
+    esac
+    local TITLE_LENGTH;  TITLE_LENGTH=$(expr length "${TITLE}");
+    local SPACER_LENGTH; SPACER_LENGTH=$(echo "${SPACER}" | awk '{ print length }')
+    local FULL_LENGTH;   FULL_LENGTH=$(expr ${TITLE_LENGTH} + $(expr ${SPACER_LENGTH} + ${SPACER_LENGTH} + 4));
+    local FILL;
+    local LPAD;
+    local RPAD;
+    case ${ALIGNMENT} in
+        "left")
+            FILL=$(expr ${WIDTH} - ${FULL_LENGTH});
+            LPAD=$(repeat_char "${PAD_CHAR}" 4);
+            RPAD=$(repeat_char "${PAD_CHAR}" $(expr ${FILL} - 4));
+        ;;
+        "right")
+            FILL=$(expr ${WIDTH} - ${FULL_LENGTH});
+            LPAD=$(repeat_char "${PAD_CHAR}" $(expr ${FILL} - 4));
+            RPAD=$(repeat_char "${PAD_CHAR}" 4);
+        ;;
+        "center")
+            FILL=$(expr ${WIDTH} - ${FULL_LENGTH});
+            FILL=$(expr ${FILL} / 2);
+            LPAD=$(repeat_char "${PAD_CHAR}" ${FILL});
+            RPAD=$(repeat_char "${PAD_CHAR}" ${FILL});
+            [[ ! $((TITLE_LENGTH % 2)) -eq 0 ]] && LPAD="${LPAD:1}"
+        ;;
+    esac
+    printf "%s%b%s%s%s%b%s\n" "${SPACER}" ${LCORNER} ${LPAD} "${TITLE}" ${RPAD} ${RCORNER} "${SPACER}"
+}
+### Title() {
+function box_title() {
+ local TITLE;         TITLE=${1-"Untitled"}
+ printf "%b\u2002%s\u2002%b" ${LR_RT} ${TITLE} ${LT_RR}
+}
+### Start
+function box_start() {
+ box_boundary $1 "top" ${2-${__DEFAULT_ALIGNMENT}} ${3-${__DEFAULT_WIDTH}}
+ SPACER="${SPACER}${__OUTPUT_SPACER}"
+}
+### End
+function box_end() {
+ local SPACER_LENGTH; SPACER_LENGTH=$(echo ${__OUTPUT_SPACER} | awk '{ print length }')
+ local t;             t=$(expr ${SPACER_LENGTH} - ${__SPACER_LENGTH});
+ SPACER="${SPACER:0:${t}}"
+ box_boundary $1 "bottom" ${2-${__DEFAULT_ALIGNMENT}} ${3-${__DEFAULT_WIDTH}}
+}
+### Content
+function box_line() {
+ box_boundary "$1" "line" ${2-${__DEFAULT_ALIGNMENT}} ${3-${__DEFAULT_WIDTH}} "\u2002"
+# printf "%s%b%s%b %s %b%s%b%s\n" ${SPACER} ${LCORNER} ${PAD} ${LR_RT} ${TITLE} ${LT_RR} ${PAD} ${RCORNER} ${SPACER}
+}
+## Expose custom functions
+export -f box_start
+export -f box_end
