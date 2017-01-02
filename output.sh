@@ -5,7 +5,7 @@ source "lines.sh"
 function output_text_help() {
   local MESSAGE;    MESSAGE="$1"
   local OUTPUT;     OUTPUT="$2"
-  box_line "Generating menu help text"
+#  box_line "Generating menu help text"
   echo "  TEXT HELP
   ${MESSAGE}
   ENDTEXT" >> "${OUTPUT}"
@@ -14,7 +14,7 @@ function output_text_help() {
 function output_menu_header() {
   local TITLE;  TITLE="$1"
   local OUTPUT; OUTPUT="$2"
-  box_line "Generating menu header"
+#  box_line "Generating menu header"
   echo "MENU TITLE ${TITLE}
 INCLUDE pxelinux.cfg/template/back_button" > "${OUTPUT}"
 }
@@ -23,7 +23,7 @@ function output_menu_entry_include() {
   local TARGET;     TARGET="$1"
   local TITLE;      TITLE="$2"
   local OUTPUT;     OUTPUT="$3"
-  box_line "Generating include menu item"
+#  box_line "Generating include menu item"
   echo "MENU INCLUDE ${TARGET} ${TITLE}" >> "${OUTPUT}"
 }
 ## Linux Menu Entry
@@ -33,7 +33,7 @@ function output_menu_entry_linux() {
   local INITRD;     INITRD="$3"
   local APPEND;     APPEND="$4"
   local OUTPUT;     OUTPUT="$5"
-  box_line "Generating Linux menu item"
+#  box_line "Generating Linux menu item"
   echo "
 LABEL ${TITLE// /-}
   MENU LABEL ${TITLE}
@@ -49,12 +49,7 @@ function output_menu_entry_iso() {
   local FILETARGET; FILETARGET="$5"
   local TITLE;      TITLE="$6"
   local OUTPUT;     OUTPUT="$7"
-  box_line "Generating ISO menu item"
-#  echo "
-#LABEL ${CORE_DIR}-${VERSION}-${OPTION//\ /_}-iso
-#  MENU LABEL ${TITLE} ${VERSION} - ISO (${ARCH}-${OPTION})
-#  KERNEL boot/isolinux/memdisk
-#  APPEND iso initrd=${CORE_DIR}/${VERSION}/${FILETARGET} raw" >> "${OUTPUT}"
+#  box_line "Generating ISO menu item"
   echo "
 LABEL ${CORE_DIR}-${VERSION}-${OPTION//\ /_}-iso
   MENU LABEL ${TITLE} ${VERSION} - ISO (${ARCH}-${OPTION})
