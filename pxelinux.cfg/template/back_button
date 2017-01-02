@@ -1,0 +1,8 @@
+LABEL Back
+  MENU LABEL ^Previous menu
+  TEXT HELP
+  Return to previous menu
+  ENDTEXT
+  MENU EXIT
+MENU SEPARATOR
+
