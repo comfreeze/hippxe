@@ -17,9 +17,9 @@ TARGET_ARCHES=(x86_64);
 KNOWN_VERSIONS=(4.4.10);
 TARGET_VERSIONS=(4.4.10);
 ## Extended Options
-EXTENDED_OPTIONS=(" " -initrd -syslinux)
+EXTENDED_OPTIONS=(${NULL} -initrd -syslinux)
 ## Option Selection
-TARGET_OPTIONS=(" " -initrd -syslinux)
+TARGET_OPTIONS=(${NULL} -initrd -syslinux)
 ## Directory Specifications
 CORE_DIR="${SUBTITLE}";
 ## Save current directory
