@@ -32,8 +32,15 @@ function check_directory() {
         cd "${TARGET}"
     fi
 }
+## Manipulation Helpers
+function find_replace() {
+    local TARGET;       TARGET=$1;
+    local REPLACEMENT;  REPLACEMENT=$2;
+    find . -type f -exec sed -i -e "s/${TARGET//\//\\\/}/${REPLACEMENT//\//\\\/}/g" {} \;
+}
 ## Expose custom functions
 export -f getrev;
 export -f getdirname;
 export -f getfile;
 export -f check_directory;
+export -f find_replace;
