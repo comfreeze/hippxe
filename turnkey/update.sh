@@ -42,7 +42,7 @@ for VERSION in ${TARGET_VERSIONS[@]}; do
             ## Compile the target filename
             FILETARGET="turnkey-${OPTION}-${VERSION}-${ARCH}.iso";
             ## Download the target file
-            box_line "Fetching $(getdirname ${URL}/${FILETARGET})"
+            box_line "Fetching ${FILETARGET}"
             getfile "${URL}/${FILETARGET}";
             if [ -f "${FILETARGET}" ]; then
                 ## Generate menu entry

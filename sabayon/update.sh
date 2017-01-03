@@ -43,7 +43,7 @@ for VERSION in ${TARGET_VERSIONS[@]}; do
             ## Compile the target filename
             FILETARGET="Sabayon_Linux_${OPTION}_${ARCH}_${FILE}.iso";
             ## Download the target file
-            box_line "Fetching $(getdirname ${URL}/${FILETARGET})"
+            box_line "Fetching ${FILETARGET}"
             getfile "${URL}/${FILETARGET}";
             if [ -f "${FILETARGET}" ]; then
                 ## Generate menu entry
