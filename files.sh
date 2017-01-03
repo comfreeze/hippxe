@@ -5,15 +5,27 @@ function getrev() {
     RESULT=$(echo ${1} | cut -d${2} -f${3-1})
     echo ${RESULT}
 }
+## Grab the last string after /
 function getdirname() {
-    local TARGET; TARGET=$1;
+    local TARGET;   TARGET=$1;
     local RESULT;
     RESULT=$(echo "${TARGET}" | cut -d \/ -f $(expr 1 + $(grep -o "/" <<< "${TARGET}" | wc -l)))
     echo ${RESULT}
 }
+## Download remote file
 function getfile() {
-    local TARGET;  TARGET="$1"
+    local TARGET;   TARGET="$1"
     wget -q -N "${TARGET}"
+}
+## Mirror a remote directory
+function getremotedir() {
+    local TARGET;   TARGET="$1"
+    local EXCLUDES; EXCLUDES="$2"
+    local ex;
+    for EXCLUDE in ${EXCLUDES[@]}; do
+        ex="$ex -R ${EXCLUDE}";
+    done
+    wget -q -N -mk -w 3 -r -np -nH --cut-dirs=10 ${ex} "${URL}"
 }
 ## Output Tools
 ## Create or change to directory
@@ -42,5 +54,6 @@ function find_replace() {
 export -f getrev;
 export -f getdirname;
 export -f getfile;
+export -f getremotedir;
 export -f check_directory;
 export -f find_replace;
