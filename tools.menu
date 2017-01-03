@@ -1,0 +1,6 @@
+MENU TITLE Tools
+INCLUDE pxelinux.cfg/template/back_button
+MENU INCLUDE gparted/default.menu GParted
+MENU INCLUDE memtest86/default.menu MemTest86
+MENU INCLUDE ubcd/default.menu Ultimate Boot CD
+MENU INCLUDE systemrescuecd/default.menu System Rescue CD

@@ -1,0 +1,10 @@
+MENU TITLE System Rescue CD
+INCLUDE pxelinux.cfg/template/back_button
+LABEL systemrescuecd-4.9.0-iso
+  MENU LABEL System Rescue CD 4.9.0 - ISO
+  LINUX /boot/isolinux/memdisk
+  INITRD /systemrescuecd/4.9.0/systemrescuecd-x86-4.9.0.iso
+  APPEND iso
+  TEXT HELP
+  Boot System Rescue CD 4.9.0 ISO
+  ENDTEXT

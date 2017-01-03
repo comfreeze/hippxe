@@ -1,0 +1,36 @@
+MENU TITLE MemTest86
+INCLUDE pxelinux.cfg/template/back_button
+LABEL memtest
+  MENU LABEL ^Default
+  KERNEL memtest86/memtest
+  TEXT HELP
+  Run MemTest86 with no options specified
+  ENDTEXT
+LABEL memtest-onepass
+  MENU LABEL ^One-Pass
+  KERNEL memtest86/memtest
+  APPEND onepass
+  TEXT HELP
+  Run MemTest86 with one-pass specified
+  ENDTEXT
+LABEL memtest-btrace
+  MENU LABEL ^B-Trace
+  KERNEL memtest86/memtest
+  APPEND btrace
+  TEXT HELP
+  Run MemTest86 with btrace specified
+  ENDTEXT
+LABEL memtest-maxcpus
+  MENU LABEL ^Max CPUS 1
+  KERNEL memtest86/memtest
+  APPEND maxcpus=1
+  TEXT HELP
+  Run MemTest86 with maxcpus set to 1
+  ENDTEXT
+LABEL memtest-console
+  MENU LABEL ^Console
+  KERNEL memtest86/memtest
+  APPEND console=ttyS0.9600
+  TEXT HELP
+  Run MemTest86 with serial console - tty0 @ 9600bps
+  ENDTEXT

@@ -1,0 +1,10 @@
+MENU TITLE Ultimate Boot CD
+INCLUDE pxelinux.cfg/template/back_button
+LABEL ubcd-5.3.6-iso
+  MENU LABEL Ultimate Boot CD 5.3.6 - ISO
+  LINUX /boot/isolinux/memdisk
+  INITRD /ubcd/5.3.7/ubcd536.iso
+  APPEND iso
+  TEXT HELP
+  Boot Ultimate Boot CD 5.3.6 ISO
+  ENDTEXT

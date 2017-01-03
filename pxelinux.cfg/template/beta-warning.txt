@@ -1,0 +1,6 @@
+This is <0eBETA07> software, and should be regarded as such wherever used.
+Deployed versions should not be relied upon for production, or even long
+-term use.
+
+Refer to https://coreos.com/releases/ for specific release notes.
+
