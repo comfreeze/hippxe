@@ -1,0 +1,19 @@
+MENU TITLE GParted Live
+INCLUDE pxelinux.cfg/template/back_button
+LABEL gparted-live-0.27.0-1-amd64-iso
+  MENU LABEL GParted Live 0.27.0-1 - ISO (amd64)
+  LINUX /boot/isolinux/memdisk
+  INITRD /gparted/0.27.0-1/gparted-live-0.27.0-1-amd64.iso
+  APPEND iso
+  TEXT HELP
+  Boot GParted Live 0.27.0-1 ISO
+  ENDTEXT
+
+LABEL gparted-live-0.27.0-1-i686-iso
+  MENU LABEL GParted Live 0.27.0-1 - ISO (i686)
+  LINUX /boot/isolinux/memdisk
+  INITRD /gparted/0.27.0-1/gparted-live-0.27.0-1-i686.iso
+  APPEND iso
+  TEXT HELP
+  Boot GParted Live 0.27.0-1 ISO
+  ENDTEXT

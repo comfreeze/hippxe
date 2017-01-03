@@ -1,0 +1,28 @@
+DEFAULT boot/isolinux/vesamenu.c32
+TIMEOUT 50
+ONTIMEOUT boot-local
+PROMPT 0
+MENU INCLUDE pxelinux.cfg/pxe.conf
+NOESCAPE 1
+
+MENU INCLUDE images.menu Images
+MENU INCLUDE tools.menu Tools
+
+LABEL boot-local
+  MENU LABEL ^SELF DESTRUCT
+  MENU DEFAULT
+  COM32 boot/isolinux/chain.c32
+  APPEND hd0 0
+#  LOCALBOOT 0
+  TEXT HELP
+  Immediately destroy the current system
+  ENDTEXT
+LABEL hardware-detection
+  MENU LABEL SCAN HARDWARE
+  COM32 boot/isolinux/hdt.c32
+LABEL reboot
+  MENU LABEL REBOOT
+  COM32 boot/isolinux/reboot.c32
+LABEL power-off
+  MENU LABEL SHUTDOWN
+  COM32 boot/isolinux/poweroff.c32
