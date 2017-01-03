@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Script to refresh Ubuntu images
-# - This script downloads stable, beta and alpha channels of the CoreOS PXE iamges.
+# - This script downloads specified Ubuntu ISO images
 # - REF URL: http://archive.ubuntu.com/ubuntu/dists/zesty/main/installer-amd64/current/images/netboot/
 #
 ## Project
@@ -47,7 +47,7 @@ for VERSION in ${TARGET_VERSIONS[@]}; do
             getfile "${URL}/${FILETARGET}";
             if [ -f "${FILETARGET}" ]; then
                 ## Generate menu entry
-                output_menu_entry_iso "${CORE_DIR}" "${VERSION}" "${ARCH}" "NA" "${FILETARGET}" "${TITLE}" "${OUTPUT_MENU_FILE}";
+                output_menu_entry_iso "${CORE_DIR}" "${VERSION}" "${ARCH}" "${OPTION}" "${FILETARGET}" "${TITLE}" "${OUTPUT_MENU_FILE}";
                 output_text_help "Boot ${TITLE} ${VERSION} ISO" "${OUTPUT_MENU_FILE}";
             fi
         done
