@@ -7,6 +7,7 @@ function output_text_help() {
   ${MESSAGE}
   ENDTEXT" >> "${OUTPUT}"
 }
+export -f output_text_help
 ## Menu Header
 function output_menu_header() {
   local TITLE;  TITLE="$1"
@@ -14,6 +15,7 @@ function output_menu_header() {
   echo "MENU TITLE ${TITLE}
 INCLUDE pxelinux.cfg/template/back_button" > "${OUTPUT}"
 }
+export -f output_menu_header
 ## ISO Menu Entry
 function output_menu_entry_include() {
   local TARGET;     TARGET="$1"
@@ -21,6 +23,7 @@ function output_menu_entry_include() {
   local OUTPUT;     OUTPUT="$3"
   echo "MENU INCLUDE ${TARGET} ${TITLE}" >> "${OUTPUT}"
 }
+export -f output_menu_entry_include
 ## Linux Menu Entry
 function output_menu_entry_linux() {
   local TITLE;      TITLE="$1"
@@ -34,6 +37,7 @@ LABEL ${TITLE// /-}
   KERNEL ${KERNEL}
   APPEND initrd=$INITRD ${APPEND}" >> "${OUTPUT}"
 }
+export -f output_menu_entry_linux
 ## ISO Menu Entry
 function output_menu_entry_iso() {
   local CORE_DIR;   CORE_DIR="$1"
@@ -50,18 +54,9 @@ LABEL ${CORE_DIR}-${VERSION}-${OPTION//\ /_}-iso
   INITRD /${CORE_DIR}/${VERSION}/${FILETARGET}
   APPEND iso raw" >> "${OUTPUT}"
 }
-## Repeat Helper
-function repeat_char() {
-  local CHAR;  CHAR=${1-'\u2550'};
-  local COUNT; COUNT=${2-1};
-  local t;     t=$(printf "%-${COUNT}b" "${CHAR}");
-  local c;     c=$(printf "%b" ${CHAR});
-  echo "${t// /${c}}"
-}
-## Expose custom functions
-export -f output_menu_header
-export -f output_text_help
-export -f output_menu_entry_include
-export -f output_menu_entry_linux
 export -f output_menu_entry_iso
-export -f repeat_char
+#function echo () {
+#  dump_method $*
+#  box_line $*
+#}
+#export -f echo
