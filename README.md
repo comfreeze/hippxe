@@ -23,12 +23,6 @@ The key directory elements are:
  * *memtest86*
    * Common memory testing toolkit
    * Binaries included
- * *lines.sh*
-   * Simple line drawing reference library (Required)
- * *colors.sh*
-   * Simple color reference constants (Required)
- * *files.sh*
-   * File utility logic (Required)
  * *output.sh*
    * Output generation helper (Required)
  * *update-images.sh*
