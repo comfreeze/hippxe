@@ -13,8 +13,8 @@ ROOT_PATH="/ubuntu-iso";
 AVAILABLE_ARCHES=(amd64);
 TARGET_ARCHES=(amd64);
 ## Available Versions
-KNOWN_VERSIONS=(12.04.5 14.04.5 15.04 16.04.1 16.10);
-TARGET_VERSIONS=(12.04.5 14.04.5 15.04 16.04.1 16.10);
+KNOWN_VERSIONS=(12.04.5 14.04.5 15.04 16.04.1 16.04.2 16.10 17.04);
+TARGET_VERSIONS=(12.04.5 14.04.5 15.04 16.04.1 16.04.2 16.10 17.04);
 ## Extended Options
 EXTENDED_OPTIONS=(desktop server alternate)
 ## Option Selection
@@ -32,6 +32,7 @@ check_directory "${START_DIR}" "${CORE_DIR}";
 ## Update selected versions
 for VERSION in ${TARGET_VERSIONS[@]}; do
     MAJOR_VERSION=$(getrev "${VERSION}" . 1);
+    box_start "$( box_title "${VERSION}" )"
 #    box_line "Reading revision ${VERSION} - ${MAJOR_VERSION}"
     ## Update each selected architecture
     for ARCH in ${TARGET_ARCHES[@]}; do
@@ -43,16 +44,12 @@ for VERSION in ${TARGET_VERSIONS[@]}; do
             ## Compile the target filename
             FILETARGET="ubuntu-${VERSION}-${OPTION}-${ARCH}.iso";
             ## Download the target file
-            box_line "Fetching ${FILETARGET}"
-            getfile "${URL}/${FILETARGET}";
-            if [ -f "${FILETARGET}" ]; then
-                ## Generate menu entry
-                output_menu_entry_iso "${CORE_DIR}" "${VERSION}" "${ARCH}" "${OPTION}" "${FILETARGET}" "${TITLE}" "${OUTPUT_MENU_FILE}";
-                output_text_help "Boot ${TITLE} ${VERSION} ISO" "${OUTPUT_MENU_FILE}";
-            fi
+            box_line "Fetching ${URL}${FILETARGET}"
+            add_iso_boot "${URL}" "${TITLE}" "${VERSION}" "${ARCH}" "${OPTION}" "${CORE_DIR}" "${FILETARGET}" "${OUTPUT_MENU_FILE}";
         done
         cd ..
     done
+    box_end "$( box_title "${VERSION}" )" "${ALIGN_RIGHT}"
 done
 ## Return to start directory
 cd ${START_DIR}

@@ -5,22 +5,22 @@
 # - REF URL: http://archive.ubuntu.com/ubuntu/dists/zesty/main/installer-amd64/current/images/netboot/
 #
 ## Project
-TITLE="VyOS";
-SUBTITLE="vyos";
+TITLE="CloudRouter";
+SUBTITLE="cloudrouter";
 ## Mirror Definition
-PROTOCOL="http"
-BASE_HOST="packages.vyos.net";
-ROOT_PATH="/iso/release";
+PROTOCOL="https"
+BASE_HOST="repo.cloudrouter.org";
+ROOT_PATH="/images";
 ## Architecture targets
-AVAILABLE_ARCHES=(amd64 i586);
-TARGET_ARCHES=(amd64 i586);
+AVAILABLE_ARCHES=(CentOS-7 Centos-7 Fedora-23 Fedora-24);
+TARGET_ARCHES=(CentOS-7 Centos-7 Fedora-24);
 ## Available Versions
-KNOWN_VERSIONS=(1.0.0 1.0.1 1.0.2 1.0.3 1.0.4 1.0.5 1.1.0 1.1.1 1.1.2 1.1.3 1.1.4 1.1.5 1.1.6 1.1.7);
-TARGET_VERSIONS=(1.0.5 1.1.6 1.1.7);
+KNOWN_VERSIONS=(3.0 4.0);
+TARGET_VERSIONS=(3.0 4.0);
 ## Extended Options
-EXTENDED_OPTIONS=(virt)
+EXTENDED_OPTIONS=("!" "-Live");
 ## Option Selection
-TARGET_OPTIONS=(virt)
+TARGET_OPTIONS=("!" "-Live");
 ## Directory Specifications
 CORE_DIR="${SUBTITLE}";
 ## Save current directory
@@ -35,22 +35,21 @@ function generate_menu() {
   check_directory "${START_DIR}" "${CORE_DIR}";
   ## Update selected versions
   for VERSION in ${TARGET_VERSIONS[@]}; do
+    MAJOR_VERSION=$(echo ${VERSION} | cut -d. -f1);
     box_start "$( box_title "${VERSION}" )"
     ## Update each selected architecture
     for ARCH in ${TARGET_ARCHES[@]}; do
+      PLATFORM=$(echo ${ARCH} | cut -d- -f1);
+      PLATFORM_LOWER=$(echo ${PLATFORM} | tr '[:upper:]' '[:lower:]');
+      PLATFORM_VERSION=$(echo ${ARCH} | cut -d- -f2);
       # Create directory if necessary
       check_directory "$(pwd)" "${VERSION}";
-      # Grab base arch images
-      URL="${PROTOCOL}://${BASE_HOST}${ROOT_PATH}/${VERSION}";
-      ## Compile the target filename
-      FILETARGET="${SUBTITLE}-${VERSION}-${ARCH}.iso";
-      ## Download the target file
-      box_line "Fetching ${URL}${FILETARGET}"
-      add_iso_boot "${URL}" "${TITLE}" "${VERSION}" "${ARCH}" "-" "${CORE_DIR}" "${FILETARGET}" "${OUTPUT_MENU_FILE}";
       ## Update each target option
       for OPTION in ${TARGET_OPTIONS[@]}; do
+        URL="${PROTOCOL}://${BASE_HOST}/${MAJOR_VERSION}/${PLATFORM_LOWER}/${PLATFORM_VERSION}${ROOT_PATH}/";
         ## Compile the target filename
-        FILETARGET="${SUBTITLE}-${VERSION}-${ARCH}-${OPTION}.iso";
+        FILETARGET="${TITLE}${OPTION//!/}-${VERSION}-${PLATFORM}.iso";
+        ## Download the target file
         box_line "Fetching ${URL}${FILETARGET}"
         add_iso_boot "${URL}" "${TITLE}" "${VERSION}" "${ARCH}" "${OPTION}" "${CORE_DIR}" "${FILETARGET}" "${OUTPUT_MENU_FILE}";
       done

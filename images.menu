@@ -3,12 +3,14 @@ INCLUDE pxelinux.cfg/template/back_button
 MENU INCLUDE arch/default.menu arch
 MENU INCLUDE calculate/default.menu calculate
 MENU INCLUDE centos/default.menu centos
-MENU INCLUDE coreos/default.menu coreos
+MENU INCLUDE cloudrouter/default.menu cloudrouter
 MENU INCLUDE damnsmalllinux/default.menu damnsmalllinux
 MENU INCLUDE fedora/default.menu fedora
 MENU INCLUDE mint/default.menu mint
 MENU INCLUDE opensuse/default.menu opensuse
 MENU INCLUDE sabayon/default.menu sabayon
+MENU INCLUDE turnkey/default.menu turnkey
 MENU INCLUDE ubcd/default.menu ubcd
 MENU INCLUDE ubuntu/default.menu ubuntu
 MENU INCLUDE ubuntu-installer/default.menu ubuntu-installer
+MENU INCLUDE vyos/default.menu vyos

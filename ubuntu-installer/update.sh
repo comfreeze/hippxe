@@ -49,6 +49,7 @@ check_directory "${START_DIR}" "${CORE_DIR}";
 ## Update selected versions
 for VERSION in ${TARGET_VERSIONS[@]}; do
     MAJOR_VERSION=$(getrev "${VERSION}" . 1);
+    box_start "$( box_title "${VERSION}" )"
 #    box_line "Reading revision ${VERSION} - ${MAJOR_VERSION}"
     ## Update each selected architecture
     for ARCH in ${TARGET_ARCHES[@]}; do
@@ -74,6 +75,7 @@ for VERSION in ${TARGET_VERSIONS[@]}; do
 #        done
         cd ..
     done
+    box_end "$( box_title "${VERSION}" )" "${ALIGN_RIGHT}"
 done
 ## Return to start directory
 cd ${START_DIR}

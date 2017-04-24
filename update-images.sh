@@ -78,24 +78,26 @@ require output
 action_update () {
   dump_method $*
   local TARGET; TARGET="$1";  shift
-  box_start "${_ROOT_DIR}"
-  if [ -z ${TARGET} ]; then
+  box_start "$( box_title "${_ROOT_DIR}" )"
+  if [ -z "${TARGET}" ]; then
     output_menu_header "Images" "${_ROOT_DIR}/${MENU_IMAGES}"
     for ITEM in *; do
-      if [[ ! ${EXCLUDES[*]} =~ "${ITEM}" ]]; then
+      if [[ -d "${ITEM}" ]] && [[ ! ${EXCLUDES[*]} =~ "${ITEM}" ]]; then
         process_dir "${ITEM}"
         if [ -f "${ITEM}/${MENU_DEFAULT}" ]; then
           output_menu_entry_include "${ITEM}/${MENU_DEFAULT}" "${ITEM}" "${_ROOT_DIR}/${MENU_IMAGES}"
         fi
       fi
+      cd ${_ROOT_DIR}
     done
   else
+    box_line "TARGET: ${TARGET}"
     for ITEM in ${TARGET[*]}; do
       process_dir "${ITEM}"
     done
   fi
   cd ${_ROOT_DIR}
-  box_end ${_ROOT_DIR} ${ALIGN_RIGHT}
+  box_end "$( box_title "${_ROOT_DIR}" )" ${ALIGN_RIGHT}
   echo ${RESET}
 }
 usage_update ()     { echo "u|update ${_REF_FORMAT}"; }
@@ -121,9 +123,11 @@ param_fake ()           { prepend_options COMMANDS "echo "; }
 # an update.sh script.
 #
 function process_dir() {
+  dump_method $*
   local ITEM;     ITEM="$1";
+  reset_mirror
   if [ -d "${ITEM}" ]; then
-    box_start ${ITEM} ${ALIGN_LEFT}
+    box_start "$( box_title "${ITEM}" )"
     if [ -f "${ITEM}/${SCRIPT_UPDATE}" ]; then
       box_line "Update starting"
       box_line "${ITEM}/${SCRIPT_UPDATE}"
@@ -132,10 +136,16 @@ function process_dir() {
     else
       box_line "Update script not found"
     fi
-    box_end ${ITEM} ${ALIGN_RIGHT}
+    box_end "$( box_title "${ITEM}" )" ${ALIGN_RIGHT}
   fi
 }
-
+function reset_mirror() {
+  dump_method $*
+  ## Mirror Definitions
+  PROTOCOL="http"
+  BASE_HOST="mirror.umd.edu"
+  ROOT_PATH="/"
+}
 #
 # EXECUTION
 ###################

@@ -39,11 +39,12 @@ check_directory "${START_DIR}" "${CORE_DIR}";
 for VERSION in ${TARGET_VERSIONS[@]}; do
     for ARCH in ${TARGET_ARCHES[@]}; do
         for OPTION in ${TARGET_OPTIONS[@]}; do
+            box_start "$( box_title "${OPTION}" )"
             # Create directory if necessary
             check_directory "$(pwd)" "${OPTION}";
             URL="${PROTOCOL}://${OPTION}.${BASE_HOST}/${ARCH}-usr/${VERSION}"
             for FILE in ${FILES[@]}; do
-                box_line "Fetching ${FILE}"
+                box_line "Fetching ${URL}${FILE}"
                 getfile "${URL}/${FILE}"
                 getfile "${URL}/${FILE}.sig"
             done
@@ -59,6 +60,7 @@ for VERSION in ${TARGET_VERSIONS[@]}; do
                 output_text_help "Boot ${TITLE} ${OPTION} Installation" "${OUTPUT_MENU_FILE}";
             fi
             cd ..
+            box_end "$( box_title "${OPTION}" )" "${ALIGN_RIGHT}"
         done
     done
 done

@@ -32,6 +32,7 @@ check_directory "${START_DIR}" "${CORE_DIR}";
 ## Update selected versions
 for VERSION in ${TARGET_VERSIONS[@]}; do
     MAJOR_VERSION=$(getrev "${VERSION}" . 1);
+    box_start "$( box_title "${VERSION}" )"
     ## Update each selected architecture
     for ARCH in ${TARGET_ARCHES[@]}; do
         # Create directory if necessary
@@ -42,16 +43,12 @@ for VERSION in ${TARGET_VERSIONS[@]}; do
             ## Compile the target filename
             FILETARGET="turnkey-${OPTION}-${VERSION}-${ARCH}.iso";
             ## Download the target file
-            box_line "Fetching ${FILETARGET}"
-            getfile "${URL}/${FILETARGET}";
-            if [ -f "${FILETARGET}" ]; then
-                ## Generate menu entry
-                output_menu_entry_iso "${CORE_DIR}" "${VERSION}" "${ARCH}" "${OPTION}" "${FILETARGET}" "${TITLE}" "${OUTPUT_MENU_FILE}";
-                output_text_help "Boot ${TITLE} ${VERSION} ISO" "${OUTPUT_MENU_FILE}";
-            fi
+            box_line "Fetching ${URL}${FILETARGET}"
+            add_iso_boot "${URL}" "${TITLE}" "${VERSION}" "${ARCH}" "-" "${CORE_DIR}" "${FILETARGET}" "${OUTPUT_MENU_FILE}";
         done
         cd ..
     done
+    box_end "$( box_title "${VERSION}" )" "${ALIGN_RIGHT}"
 done
 ## Return to start directory
 cd ${START_DIR}

@@ -55,6 +55,26 @@ LABEL ${CORE_DIR}-${VERSION}-${OPTION//\ /_}-iso
   APPEND iso raw" >> "${OUTPUT}"
 }
 export -f output_menu_entry_iso
+function add_iso_boot() {
+  dump_method $*
+  local url;        url="$1";       shift
+  local title;      title="$1";     shift
+  local version;    version="$1";   shift
+  local arch;       arch="$1";      shift
+  local option;     option="$1";    shift
+  local dirname;    dirname="$1";   shift
+  local filename;   filename="$1";  shift
+  local output;     output="$1";    shift
+  getfile "${url}/${filename}";
+  if [ -f "${filename}" ]; then
+    ## Generate menu entry
+    output_menu_entry_iso "${dirname}" "${version}" "${arch}" "${option}" "${filename}" "${title}" "${output}";
+    output_text_help "Boot ${title} ${version} ISO" "${output}";
+  else
+    return 404
+  fi
+}
+export -f add_iso_boot
 #function echo () {
 #  dump_method $*
 #  box_line $*
