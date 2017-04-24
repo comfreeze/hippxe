@@ -4,3 +4,28 @@
 *.sig
 *.log
 .idea/**
+
+# Distribution Content
+/arch/**
+/calculate/**
+/centos/**
+/cloudrouter/**
+/coreos/**
+/damnsmalllinux/**
+/fedora/**
+/gparted/**
+/memtest86/**
+/mint/**
+/opensuse/**
+/openwrt/**
+/pfsense/**
+/sabayon/**
+/systemrescuecd/**
+/turnkey/**
+/ubcd/**
+/ubuntu/**
+/ubuntu-installer/**
+/vyos/**
+
+# Don't ignore update scripts
+!*/update.sh
